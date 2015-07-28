@@ -1,6 +1,5 @@
 all: install/lib/libgccjit.so
 
-
 clean:
 
 distclean:
