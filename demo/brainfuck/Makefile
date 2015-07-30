@@ -4,13 +4,13 @@ CC=gcc
 CFLAGS=-I$(LIBGCCJIT_BASEPATH)/include -g3
 LDFLAGS=-L$(LIBGCCJIT_BASEPATH)/lib -lgccjit -Wl,-rpath,$(LIBGCCJIT_BASEPATH)/lib
 
-all: braninfuck
+all: brainfuck
 
 clean:
-	rm -rf braninfuck braninfuck.o
+	rm -rf brainfuck brainfuck.o
 
-braninfuck: braninfuck.o
+brainfuck: brainfuck.o
 	$(CC) -o $@ $(LDFLAGS) $<
 
-braninfuck.o: braninfuck.c
+brainfuck.o: brainfuck.c
 	$(CC) -o $@ -c $< $(CFLAGS)
