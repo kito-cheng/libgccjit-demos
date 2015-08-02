@@ -27,18 +27,22 @@ int main(int argc, const char *argv[]) {
     exit (1);
   }
 
+  /* Declare type for `int`.  */
   gcc_jit_type *int_type =
     gcc_jit_context_get_type (ctxt, GCC_JIT_TYPE_INT);
 
+  /* Declare type for `int[30000]`.  */
   gcc_jit_type *int_arr_type =
     gcc_jit_context_new_array_type (ctxt,
                                     NULL,
                                     int_type,
                                     30000);
 
+  /* Declare type for void.  */
   gcc_jit_type *void_type =
     gcc_jit_context_get_type (ctxt, GCC_JIT_TYPE_VOID);
 
+  /* Declare a function `void brainfuck()`.  */
   gcc_jit_function *func =
     gcc_jit_context_new_function (ctxt, NULL,
                                   GCC_JIT_FUNCTION_EXPORTED,
@@ -47,6 +51,7 @@ int main(int argc, const char *argv[]) {
                                   0, NULL,
                                   0);
 
+  /* Declare a static global variable `data` of type int[30000].  */
   gcc_jit_lvalue *data =
     gcc_jit_context_new_global (
       ctxt,
@@ -54,6 +59,8 @@ int main(int argc, const char *argv[]) {
       GCC_JIT_GLOBAL_INTERNAL,
       int_arr_type,
       "data");
+
+  /* Declare a static global variable `idx` of type int.  */
   gcc_jit_lvalue *idx =
     gcc_jit_context_new_global (
       ctxt,
@@ -65,9 +72,13 @@ int main(int argc, const char *argv[]) {
   gcc_jit_block *curblock =
     gcc_jit_function_new_block (func, NULL);
 
+  /* Create a constant value 1 with type int.  */
   gcc_jit_rvalue *int_one = gcc_jit_context_one (ctxt, int_type);
+
+  /* Create a constant value 0 with type int.  */
   gcc_jit_rvalue *int_zero = gcc_jit_context_zero (ctxt, int_type);
 
+  /* Declare a function `int putchar(int c)`.  */
   gcc_jit_param *param_c =
     gcc_jit_context_new_param (ctxt, NULL, int_type, "c");
   gcc_jit_function *func_putchar =
@@ -77,6 +88,7 @@ int main(int argc, const char *argv[]) {
                                   "putchar",
                                   1, &param_c,
                                   0);
+  /* Declare a function `int getchar()`.  */
   gcc_jit_function *func_getchar =
     gcc_jit_context_new_function (ctxt, NULL,
                                   GCC_JIT_FUNCTION_IMPORTED,
@@ -88,6 +100,7 @@ int main(int argc, const char *argv[]) {
   while ((ch = fgetc(fp)) != EOF) {
     switch (ch) {
       case '>':
+        /* Append `idx += 1` to curblock.  */
         gcc_jit_block_add_assignment_op (curblock,
                                          NULL,
                                          idx,
@@ -96,6 +109,7 @@ int main(int argc, const char *argv[]) {
 
         break;
       case '<':
+        /* Append `idx -= 1` to curblock.  */
         gcc_jit_block_add_assignment_op (curblock,
                                          NULL,
                                          idx,
@@ -103,6 +117,7 @@ int main(int argc, const char *argv[]) {
                                          int_one);
         break;
       case '+':
+        /* Append `data[idx] += 1` to curblock.  */
         gcc_jit_block_add_assignment_op (
           curblock,
           NULL,
@@ -115,6 +130,7 @@ int main(int argc, const char *argv[]) {
           int_one);
         break;
       case '-':
+        /* Append `data[idx] -= 1` to curblock.  */
         gcc_jit_block_add_assignment_op (
           curblock,
           NULL,
@@ -128,6 +144,7 @@ int main(int argc, const char *argv[]) {
         break;
       case '.':
         {
+          /* Append `putchar(data[idx])` to curblock.  */
           gcc_jit_rvalue *arg =
             gcc_jit_lvalue_as_rvalue (
               gcc_jit_context_new_array_access (
@@ -145,6 +162,7 @@ int main(int argc, const char *argv[]) {
         break;
       case ',':
         {
+          /* Append `data[idx] = getchar()` to curblock.  */
           gcc_jit_rvalue *call =
             gcc_jit_context_new_call (ctxt,
                                       NULL,
@@ -212,7 +230,10 @@ int main(int argc, const char *argv[]) {
         break;
     }
   }
+  /* Append `return` to curblock.  */
   gcc_jit_block_end_with_void_return (curblock, NULL);
+
+  /* Let's compile!  */
   result = gcc_jit_context_compile (ctxt);
 
   if (!result) {
@@ -220,11 +241,15 @@ int main(int argc, const char *argv[]) {
     exit (1);
   }
 
+  /* Get brainf*ck just like dlsym.  */
   typedef void (*fn_type) (void);
   fn_type brainfuck =
     (fn_type)gcc_jit_result_get_code (result, "brainfuck");
+
+  /* brainf*ck!  */
   brainfuck ();
 
+  /* Release resource.  */
   fclose (fp);
   gcc_jit_context_release (ctxt);
   gcc_jit_result_release (result);
