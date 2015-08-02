@@ -84,7 +84,7 @@ int main(int argc, const char *argv[]) {
   gcc_jit_function *func_putchar =
     gcc_jit_context_new_function (ctxt, NULL,
                                   GCC_JIT_FUNCTION_IMPORTED,
-                                  void_type,
+                                  int_type,
                                   "putchar",
                                   1, &param_c,
                                   0);
