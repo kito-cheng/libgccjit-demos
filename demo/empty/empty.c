@@ -1,20 +1,10 @@
 #include <libgccjit.h>
-#include <assert.h>
-#include <stdbool.h>
 
-#include <stdlib.h>
-#include <stdio.h>
-
-int main(int argc, const char *argv[]) {
+int main() {
   gcc_jit_context *ctxt;
   gcc_jit_result *result;
-  int ch;
 
   ctxt = gcc_jit_context_acquire ();
-  if (!ctxt) {
-    printf ("can't get gcc context");
-    exit (1);
-  }
 
   gcc_jit_type *void_type =
     gcc_jit_context_get_type (ctxt, GCC_JIT_TYPE_VOID);
@@ -35,12 +25,6 @@ int main(int argc, const char *argv[]) {
     NULL);
 
   result = gcc_jit_context_compile (ctxt);
-
-  if (!result) {
-    fprintf (stderr, "NULL result");
-    exit (1);
-  }
-
 
   typedef void (*fn_type) ();
   fn_type empty =
