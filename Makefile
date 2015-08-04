@@ -19,7 +19,9 @@ build/gcc/Makefile: srcs/.gcc.stamp
 	    --enable-host-shared \
 	    --enable-languages=jit \
 	    --disable-bootstrap \
-	    --prefix=$(PWD)/install
+	    --prefix=$(PWD)/install \
+	    --disable-multilib \
+	    --disable-nls
 
 download/gcc-5.2.0.tar.bz2:
 	mkdir -p $(dir $@)
