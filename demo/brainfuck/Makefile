@@ -10,7 +10,7 @@ clean:
 	rm -rf brainfuck brainfuck.o
 
 brainfuck: brainfuck.o
-	$(CC) -o $@ $(LDFLAGS) $<
+	$(CC) -o $@ $< $(LDFLAGS)
 
 brainfuck.o: brainfuck.c
 	$(CC) -o $@ -c $< $(CFLAGS)

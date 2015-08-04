@@ -10,7 +10,7 @@ clean:
 	rm -rf plus1 plus1.o
 
 plus1: plus1.o
-	$(CC) -o $@ $(LDFLAGS) $<
+	$(CC) -o $@ $< $(LDFLAGS)
 
 plus1.o: plus1.c
 	$(CC) -o $@ -c $< $(CFLAGS)

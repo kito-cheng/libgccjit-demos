@@ -10,7 +10,7 @@ clean:
 	rm -rf empty empty.o
 
 empty: empty.o
-	$(CC) -o $@ $(LDFLAGS) $<
+	$(CC) -o $@ $< $(LDFLAGS)
 
 empty.o: empty.c
 	$(CC) -o $@ -c $< $(CFLAGS)

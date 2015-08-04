@@ -10,7 +10,7 @@ clean:
 	rm -rf helloworld helloworld.o
 
 helloworld: helloworld.o
-	$(CC) -o $@ $(LDFLAGS) $<
+	$(CC) -o $@ $< $(LDFLAGS)
 
 helloworld.o: helloworld.c
 	$(CC) -o $@ -c $< $(CFLAGS)
