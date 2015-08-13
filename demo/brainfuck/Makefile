@@ -4,7 +4,7 @@ CC=gcc
 CFLAGS=-I$(LIBGCCJIT_BASEPATH)/include -g3
 LDFLAGS=-L$(LIBGCCJIT_BASEPATH)/lib -lgccjit -Wl,-rpath,$(LIBGCCJIT_BASEPATH)/lib
 
-all: brainfuck
+all: brainfuck brainfuck-dbg brainfuck-opt brainfuck-opt-dump
 
 clean:
 	rm -rf brainfuck brainfuck.o
@@ -13,4 +13,22 @@ brainfuck: brainfuck.o
 	$(CC) -o $@ $< $(LDFLAGS)
 
 brainfuck.o: brainfuck.c
+	$(CC) -o $@ -c $< $(CFLAGS)
+
+brainfuck-dbg: brainfuck-dbg.o
+	$(CC) -o $@ $< $(LDFLAGS)
+
+brainfuck-dbg.o: brainfuck-dbg.c
+	$(CC) -o $@ -c $< $(CFLAGS)
+
+brainfuck-opt: brainfuck-opt.o
+	$(CC) -o $@ $< $(LDFLAGS)
+
+brainfuck-opt.o: brainfuck-opt.c
+	$(CC) -o $@ -c $< $(CFLAGS)
+
+brainfuck-opt-dump: brainfuck-opt-dump.o
+	$(CC) -o $@ $< $(LDFLAGS)
+
+brainfuck-opt-dump.o: brainfuck-opt-dump.c
 	$(CC) -o $@ -c $< $(CFLAGS)
