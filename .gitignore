@@ -1,0 +1,5 @@
+*.o
+download
+install
+srcs
+build
