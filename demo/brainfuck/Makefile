@@ -3,11 +3,12 @@ LIBGCCJIT_BASEPATH=$(PWD)/../../install
 CC=gcc
 CFLAGS=-I$(LIBGCCJIT_BASEPATH)/include -g3
 LDFLAGS=-L$(LIBGCCJIT_BASEPATH)/lib -lgccjit -Wl,-rpath,$(LIBGCCJIT_BASEPATH)/lib
+TARGETS=brainfuck brainfuck-dbg brainfuck-opt brainfuck-opt-dump
 
-all: brainfuck brainfuck-dbg brainfuck-opt brainfuck-opt-dump
+all: $(TARGETS)
 
 clean:
-	rm -rf brainfuck brainfuck.o
+	rm -rf *.o $(TARGETS)
 
 brainfuck: brainfuck.o
 	$(CC) -o $@ $< $(LDFLAGS)
