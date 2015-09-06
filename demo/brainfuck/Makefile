@@ -10,26 +10,8 @@ all: $(TARGETS)
 clean:
 	rm -rf *.o $(TARGETS)
 
-brainfuck: brainfuck.o
+%: %.o
 	$(CC) -o $@ $< $(LDFLAGS)
 
-brainfuck.o: brainfuck.c
-	$(CC) -o $@ -c $< $(CFLAGS)
-
-brainfuck-dbg: brainfuck-dbg.o
-	$(CC) -o $@ $< $(LDFLAGS)
-
-brainfuck-dbg.o: brainfuck-dbg.c
-	$(CC) -o $@ -c $< $(CFLAGS)
-
-brainfuck-opt: brainfuck-opt.o
-	$(CC) -o $@ $< $(LDFLAGS)
-
-brainfuck-opt.o: brainfuck-opt.c
-	$(CC) -o $@ -c $< $(CFLAGS)
-
-brainfuck-opt-dump: brainfuck-opt-dump.o
-	$(CC) -o $@ $< $(LDFLAGS)
-
-brainfuck-opt-dump.o: brainfuck-opt-dump.c
+%.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGS)
