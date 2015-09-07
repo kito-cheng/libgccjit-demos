@@ -7,7 +7,6 @@
 
 struct loop_t {
   gcc_jit_block *cond;
-  gcc_jit_block *body;
   gcc_jit_block *exit;
 };
 
@@ -225,7 +224,6 @@ int main(int argc, const char *argv[]) {
           );
 
           loops[loop_level].cond = cond;
-          loops[loop_level].body = body;
           loops[loop_level].exit = exit;
           loop_level++;
           curblock = body;
